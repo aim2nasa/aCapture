@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="gUnitTest"
-	ProjectGUID="{C7CA6388-5441-48C2-8FA3-43055A121861}"
-	RootNamespace="gUnitTest"
+	Name="readDevice"
+	ProjectGUID="{611E8A35-1DE7-4F7A-B5B4-7BD67C6EB8EA}"
+	RootNamespace="readDevice"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -60,7 +60,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="gtestd.lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -134,7 +133,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="gtest.lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -177,15 +175,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\deviceTest.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\main.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\sampleTest.cpp"
 				>
 			</File>
 		</Filter>

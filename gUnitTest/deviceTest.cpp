@@ -1,6 +1,9 @@
 #include <gtest/gtest.h>
+#include <objbase.h>
 
-TEST(devRead,deviceTest)
+TEST(comInit,deviceTest)
 {
-	EXPECT_EQ(1,1);
+	HRESULT hr = CoInitialize(NULL);
+	EXPECT_EQ(hr,S_OK);
+	CoUninitialize();
 }

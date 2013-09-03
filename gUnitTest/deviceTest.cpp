@@ -46,7 +46,8 @@ HRESULT deviceReader(REFCLSID clsidDeviceClass,ICreateDevEnum *pDeviceEnum)
 				VariantInit(&varName);
 				hr = pPropBag->Read(L"FriendlyName",&varName,0);
 				if(SUCCEEDED(hr)) {
-					std::cout<<varName.bstrVal<<std::endl;
+					std::wstring str = std::wstring(varName.bstrVal);
+					std::wcout<<str;
 				}
 				VariantClear(&varName);
 			}

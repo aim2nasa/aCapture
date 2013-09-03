@@ -18,10 +18,7 @@ TEST(devEnum,deviceTest)
 {
 	CoInitialize(NULL);
 
-
-	ICreateDevEnum *pDeviceEnum=NULL;
-
-
+	CComPtr<ICreateDevEnum> pDeviceEnum;
 	EXPECT_EQ(pDeviceEnum,reinterpret_cast<ICreateDevEnum*>(NULL));
 
 	HRESULT hr = CoCreateInstance(CLSID_SystemDeviceEnum, NULL, CLSCTX_INPROC_SERVER,IID_ICreateDevEnum, (void **)&pDeviceEnum);
@@ -30,6 +27,5 @@ TEST(devEnum,deviceTest)
 
 	EXPECT_NE(pDeviceEnum,reinterpret_cast<ICreateDevEnum*>(NULL));
 
-	pDeviceEnum->Release(); 
 	CoUninitialize();
 }

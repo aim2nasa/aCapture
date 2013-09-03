@@ -29,3 +29,18 @@ TEST(devEnum,deviceTest)
 
 	CoUninitialize();
 }
+
+HRESULT deviceReader(GUID deviceClsid,ICreateDevEnum *pDeviceEnum)
+{
+	CComPtr <IEnumMoniker> pEnumCat;
+	HRESULT hr = pDeviceEnum->CreateClassEnumerator(deviceClsid, &pEnumCat, 0);// Enumerate the specified device, distinguished by DEVICE_CLSID
+	if (hr == S_OK) 
+	{
+	}
+	return hr;
+}
+
+TEST(devRead,deviceTest)
+{
+
+}

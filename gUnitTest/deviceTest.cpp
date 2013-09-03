@@ -33,9 +33,26 @@ TEST(devEnum,deviceTest)
 HRESULT deviceReader(REFCLSID clsidDeviceClass,ICreateDevEnum *pDeviceEnum)
 {
 	CComPtr <IEnumMoniker> pEnumCat;
+	VARIANT varName;
+
 	HRESULT hr = pDeviceEnum->CreateClassEnumerator(clsidDeviceClass, &pEnumCat, 0);// Enumerate the specified device, distinguished by DEVICE_CLSID
-	if (hr == S_OK) 
-	{
+	if (hr == S_OK) {
+		IMoniker *pDeviceMonik = NULL;
+		ULONG cFetched;
+		while(pEnumCat->Next(1,&pDeviceMonik,&cFetched)==S_OK){
+			IPropertyBag *pPropBag = NULL;
+			hr = pDeviceMonik->BindToStorage(0,0,IID_IPropertyBag,(void**)&pPropBag);
+			if(SUCCEEDED(hr)){
+				VariantInit(&varName);
+				hr = pPropBag->Read(L"FriendlyName",&varName,0);
+				if(SUCCEEDED(hr)) {
+					std::cout<<varName.bstrVal<<std::endl;
+				}
+				VariantClear(&varName);
+				pPropBag->Release();
+			}
+			pDeviceMonik->Release();
+		}
 	}
 	return hr;
 }

@@ -30,10 +30,10 @@ TEST(devEnum,deviceTest)
 	CoUninitialize();
 }
 
-HRESULT deviceReader(GUID deviceClsid,ICreateDevEnum *pDeviceEnum)
+HRESULT deviceReader(REFCLSID clsidDeviceClass,ICreateDevEnum *pDeviceEnum)
 {
 	CComPtr <IEnumMoniker> pEnumCat;
-	HRESULT hr = pDeviceEnum->CreateClassEnumerator(deviceClsid, &pEnumCat, 0);// Enumerate the specified device, distinguished by DEVICE_CLSID
+	HRESULT hr = pDeviceEnum->CreateClassEnumerator(clsidDeviceClass, &pEnumCat, 0);// Enumerate the specified device, distinguished by DEVICE_CLSID
 	if (hr == S_OK) 
 	{
 	}
@@ -42,5 +42,18 @@ HRESULT deviceReader(GUID deviceClsid,ICreateDevEnum *pDeviceEnum)
 
 TEST(devRead,deviceTest)
 {
+	CoInitialize(NULL);
 
+	CComPtr<ICreateDevEnum> pDeviceEnum;
+	EXPECT_EQ(pDeviceEnum,reinterpret_cast<ICreateDevEnum*>(NULL));
+
+	HRESULT hr = CoCreateInstance(CLSID_SystemDeviceEnum, NULL, CLSCTX_INPROC_SERVER,IID_ICreateDevEnum, (void **)&pDeviceEnum);
+	if(FAILED(hr)) 
+		FAIL();
+
+	hr = deviceReader(CLSID_AudioInputDeviceCategory,pDeviceEnum);
+	EXPECT_EQ(hr,S_OK);
+
+	EXPECT_NE(pDeviceEnum,reinterpret_cast<ICreateDevEnum*>(NULL));
+	CoUninitialize();
 }

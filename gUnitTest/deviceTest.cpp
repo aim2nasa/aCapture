@@ -40,7 +40,7 @@ HRESULT deviceReader(REFCLSID clsidDeviceClass,ICreateDevEnum *pDeviceEnum)
 		IMoniker *pDeviceMonik = NULL;
 		ULONG cFetched;
 		while(pEnumCat->Next(1,&pDeviceMonik,&cFetched)==S_OK){
-			IPropertyBag *pPropBag = NULL;
+			CComPtr<IPropertyBag> pPropBag;
 			hr = pDeviceMonik->BindToStorage(0,0,IID_IPropertyBag,(void**)&pPropBag);
 			if(SUCCEEDED(hr)){
 				VariantInit(&varName);
@@ -49,7 +49,6 @@ HRESULT deviceReader(REFCLSID clsidDeviceClass,ICreateDevEnum *pDeviceEnum)
 					std::cout<<varName.bstrVal<<std::endl;
 				}
 				VariantClear(&varName);
-				pPropBag->Release();
 			}
 			pDeviceMonik->Release();
 		}
@@ -69,7 +68,8 @@ TEST(devRead,deviceTest)
 		FAIL();
 
 	hr = deviceReader(CLSID_AudioInputDeviceCategory,pDeviceEnum);
-	EXPECT_EQ(hr,S_OK);
+	if(FAILED(hr)) 
+		FAIL();
 
 	EXPECT_NE(pDeviceEnum,reinterpret_cast<ICreateDevEnum*>(NULL));
 	CoUninitialize();

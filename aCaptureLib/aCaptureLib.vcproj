@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="gUnitTest"
-	ProjectGUID="{C7CA6388-5441-48C2-8FA3-43055A121861}"
-	RootNamespace="gUnitTest"
+	Name="aCaptureLib"
+	ProjectGUID="{7D18A3C1-815C-4DFF-B256-85BCBAC3BB14}"
+	RootNamespace="aCaptureLib"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -19,7 +19,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="..\bin\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="..\bin\$(PlatformName)\$(ConfigurationName)\$(ProjectName)"
-			ConfigurationType="1"
+			ConfigurationType="2"
 			CharacterSet="1"
 			>
 			<Tool
@@ -41,7 +41,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;ACAPTURELIB_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -49,7 +49,7 @@
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="4"
-				DisableSpecificWarnings="4819"
+				DisableSpecificWarnings="4819,4995"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -62,10 +62,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="gtestd.lib strmiids.lib"
+				AdditionalDependencies="Quartz.lib Strmiids.lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
-				SubSystem="1"
+				SubSystem="2"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -97,7 +97,7 @@
 			Name="Release|Win32"
 			OutputDirectory="..\bin\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="..\bin\$(PlatformName)\$(ConfigurationName)\$(ProjectName)"
-			ConfigurationType="1"
+			ConfigurationType="2"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
@@ -119,13 +119,13 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="..\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;ACAPTURELIB_EXPORTS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="3"
-				DisableSpecificWarnings="4819"
+				DisableSpecificWarnings="4819,4995"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -138,10 +138,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="gtest.lib strmiids.lib"
+				AdditionalDependencies="Quartz.lib Strmiids.lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
-				SubSystem="1"
+				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				TargetMachine="1"
@@ -181,19 +181,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\deviceTest.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\DxDevTest.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\main.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\sampleTest.cpp"
+				RelativePath="..\lib\CDxDev.cpp"
 				>
 			</File>
 		</Filter>
@@ -202,6 +190,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath="..\include\aCapture\CDxDev.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="리소스 파일"

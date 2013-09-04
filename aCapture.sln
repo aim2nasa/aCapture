@@ -2,8 +2,13 @@
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gUnitTest", "gUnitTest\gUnitTest.vcproj", "{C7CA6388-5441-48C2-8FA3-43055A121861}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7D18A3C1-815C-4DFF-B256-85BCBAC3BB14} = {7D18A3C1-815C-4DFF-B256-85BCBAC3BB14}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "readDevice", "readDevice\readDevice.vcproj", "{611E8A35-1DE7-4F7A-B5B4-7BD67C6EB8EA}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "aCaptureLib", "aCaptureLib\aCaptureLib.vcproj", "{7D18A3C1-815C-4DFF-B256-85BCBAC3BB14}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,6 +24,10 @@ Global
 		{611E8A35-1DE7-4F7A-B5B4-7BD67C6EB8EA}.Debug|Win32.Build.0 = Debug|Win32
 		{611E8A35-1DE7-4F7A-B5B4-7BD67C6EB8EA}.Release|Win32.ActiveCfg = Release|Win32
 		{611E8A35-1DE7-4F7A-B5B4-7BD67C6EB8EA}.Release|Win32.Build.0 = Release|Win32
+		{7D18A3C1-815C-4DFF-B256-85BCBAC3BB14}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7D18A3C1-815C-4DFF-B256-85BCBAC3BB14}.Debug|Win32.Build.0 = Debug|Win32
+		{7D18A3C1-815C-4DFF-B256-85BCBAC3BB14}.Release|Win32.ActiveCfg = Release|Win32
+		{7D18A3C1-815C-4DFF-B256-85BCBAC3BB14}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

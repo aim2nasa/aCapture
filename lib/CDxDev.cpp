@@ -7,6 +7,7 @@ CDxDev::CDxDev()
 {
 	HRESULT hr = CoCreateInstance(CLSID_SystemDeviceEnum, NULL, CLSCTX_INPROC_SERVER, IID_ICreateDevEnum, (void**)&m_pDeviceEnum);
 	assert(SUCCEEDED(hr));
+	assert(m_pDeviceEnum);
 }
 
 CDxDev::~CDxDev()

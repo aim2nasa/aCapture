@@ -2,8 +2,24 @@
 #include <atlbase.h>
 #include <assert.h>
 
+CName::CName()
+{
+
+}
+
+CName::CName(String friendly)
+:m_friendly(friendly)
+{
+
+}
+
+CName::~CName()
+{
+
+}
+
 CDxDev::CDxDev()
-:m_pNames(new std::list<CDxDev::CName>),m_pDeviceEnum(NULL)
+:m_pDeviceEnum(NULL)
 {
 	HRESULT hr = CoCreateInstance(CLSID_SystemDeviceEnum, NULL, CLSCTX_INPROC_SERVER, IID_ICreateDevEnum, (void**)&m_pDeviceEnum);
 	assert(SUCCEEDED(hr));
@@ -13,7 +29,6 @@ CDxDev::CDxDev()
 CDxDev::~CDxDev()
 {
 	m_pDeviceEnum->Release();
-	delete m_pNames;
 }
 
 String CDxDev::errorMsg()
@@ -36,7 +51,6 @@ HRESULT CDxDev::devRead(REFCLSID clsidDeviceClass)
 	CComPtr <IEnumMoniker> pEnumCat;
 	VARIANT varName;
 
-	m_pNames->clear();
 	HRESULT hr = m_pDeviceEnum->CreateClassEnumerator(clsidDeviceClass, &pEnumCat, 0);// Enumerate the specified device, distinguished by DEVICE_CLSID
 	if(hr == S_OK) {
 		IMoniker *pDeviceMonik = NULL;
@@ -48,7 +62,7 @@ HRESULT CDxDev::devRead(REFCLSID clsidDeviceClass)
 				VariantInit(&varName);
 				hr = pPropBag->Read(L"FriendlyName",&varName,0);
 				if(SUCCEEDED(hr)) {
-					m_pNames->push_back(CName(String(varName.bstrVal)));
+					m_names.push_back(CName(String(varName.bstrVal)));
 				}else {
 					hrFailed(hr);
 				}
@@ -62,4 +76,9 @@ HRESULT CDxDev::devRead(REFCLSID clsidDeviceClass)
 		hrFailed(hr);
 	}
 	return hr;
+}
+
+std::list<CName>& CDxDev::names()
+{
+	return m_names;
 }

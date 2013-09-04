@@ -12,7 +12,7 @@ TEST(devRead,DxDevTest)
 	if(FAILED(hr)) { FAIL(); }
 
 	std::list<CName> names = dev.names();
-	EXPECT_GT(names.size(),1);	//오디오 입력장치가 하나 이상이라고 가정
+	EXPECT_GE(names.size(),1);	//오디오 입력장치가 하나 이상이라고 가정
 
 	CoUninitialize();
 }

@@ -5,6 +5,16 @@
 #include <dshow.h>
 #include <list>
 
+class DLLEXP CName{
+public:
+	CName();
+	CName(String friendly);
+	virtual ~CName();
+
+	String	m_friendly;
+	String	m_full;
+};
+
 class DLLEXP CDxDev{
 public:
 	CDxDev();
@@ -15,17 +25,11 @@ public:
 
 	HRESULT devRead(REFCLSID clsidDeviceClass);
 
-	class CName{
-	public:
-		CName(String friendly):m_friendly(friendly){}
-		CName(String full,String friendly):m_full(full),m_friendly(friendly){}
-		String m_full;
-		String m_friendly;
-	};
+	std::list<CName>& names();
 
 protected:
 	String				m_errorMsg;
-	std::list<CName>*	m_pNames;
+	std::list<CName>	m_names;
 	ICreateDevEnum*		m_pDeviceEnum;
 };
 

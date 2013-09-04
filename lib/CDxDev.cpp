@@ -51,6 +51,7 @@ HRESULT CDxDev::devRead(REFCLSID clsidDeviceClass)
 	CComPtr <IEnumMoniker> pEnumCat;
 	VARIANT varName;
 
+	m_names.clear();
 	HRESULT hr = m_pDeviceEnum->CreateClassEnumerator(clsidDeviceClass, &pEnumCat, 0);// Enumerate the specified device, distinguished by DEVICE_CLSID
 	if(hr == S_OK) {
 		IMoniker *pDeviceMonik = NULL;

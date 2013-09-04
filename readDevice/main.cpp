@@ -1,17 +1,12 @@
 #include <iostream>
 #include <acapture/CDxDev.h>
 
-int main(int argc, char* argv[])
+void read(CDxDev* pDev,REFCLSID clsidDeviceClass)
 {
-	std::locale::global(std::locale("kor"));
-
-	CoInitialize(NULL);
-
-	CDxDev* pDev = new CDxDev();
-	HRESULT hr = pDev->devRead(CLSID_AudioInputDeviceCategory);
+	HRESULT hr = pDev->devRead(clsidDeviceClass);
 	if(FAILED(hr)){
 		std::wcout<<L"Error: "<<pDev->errorMsg()<<std::endl;
-		exit(1);
+		return;
 	}
 
 	std::list<CName> names = pDev->names();
@@ -20,6 +15,17 @@ int main(int argc, char* argv[])
 	for(std::list<CName>::iterator it=names.begin();it!=names.end();it++){
 		std::wcout<<"\tname:"<<(*it).m_friendly<<std::endl;
 	}
+}
+
+int main(int argc, char* argv[])
+{
+	std::locale::global(std::locale("kor"));
+
+	CoInitialize(NULL);
+
+	CDxDev* pDev = new CDxDev();
+
+	read(pDev,CLSID_AudioInputDeviceCategory);
 
 	delete pDev;
 

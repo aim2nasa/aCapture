@@ -3,6 +3,7 @@
 #include <atlbase.h>
 #include <strmif.h>
 #include <uuids.h>
+#include <aCapture/typedef.h>
 
 TEST(comInit,deviceTest)
 {
@@ -46,7 +47,7 @@ HRESULT deviceReader(REFCLSID clsidDeviceClass,ICreateDevEnum *pDeviceEnum)
 				VariantInit(&varName);
 				hr = pPropBag->Read(L"FriendlyName",&varName,0);
 				if(SUCCEEDED(hr)) {
-					std::wstring str = std::wstring(varName.bstrVal);
+					String str = String(varName.bstrVal);
 					std::wcout<<str;
 				}
 				VariantClear(&varName);

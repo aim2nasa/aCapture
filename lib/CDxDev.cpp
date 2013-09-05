@@ -60,14 +60,24 @@ HRESULT CDxDev::devRead(REFCLSID clsidDeviceClass)
 			CComPtr<IPropertyBag> pPropBag;
 			hr = pDeviceMonik->BindToStorage(0,0,IID_IPropertyBag,(void**)&pPropBag);
 			if(SUCCEEDED(hr)){
+				CName name;
+
+				LPOLESTR pDisplayName=NULL;
+				if(SUCCEEDED(pDeviceMonik->GetDisplayName(0,0,&pDisplayName))){
+					name.m_full = String(pDisplayName);
+					CoTaskMemFree(pDisplayName);
+				}
+
 				VariantInit(&varName);
 				hr = pPropBag->Read(L"FriendlyName",&varName,0);
 				if(SUCCEEDED(hr)) {
-					m_names.push_back(CName(String(varName.bstrVal)));
+					name.m_friendly = String(varName.bstrVal);
 				}else {
 					hrFailed(hr);
 				}
 				VariantClear(&varName);
+
+				m_names.push_back(name);
 			}else {
 				hrFailed(hr);
 			}

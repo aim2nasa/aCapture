@@ -11,8 +11,12 @@ TEST(devRead,DxDevTest)
 	HRESULT hr = dev.devRead(CLSID_AudioInputDeviceCategory);
 	if(FAILED(hr)) { FAIL(); }
 
+	//하나 이상이 나오면 반드시 오든 것들은 이름이 나와야 한다
 	std::list<CName> names = dev.names();
-	EXPECT_GE(names.size(),1);	//오디오 입력장치가 하나 이상이라고 가정
+	for(std::list<CName>::iterator it=names.begin();it!=names.end();it++) {	
+		EXPECT_GT((*it).m_friendly.size(),0);
+		EXPECT_GT((*it).m_full.size(),0);
+	}
 
 	CoUninitialize();
 }

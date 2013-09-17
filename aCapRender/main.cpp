@@ -102,19 +102,13 @@ void Device_Connect(IBaseFilter* pInputDevice,IBaseFilter* pOutputDevice)
 	IEnumPins *pInputPin = NULL,*pOutputPin  = NULL;// Pin enumeration
 	IPin *pIn = NULL, *pOut = NULL;// Pins
 
-	hr = pInputDevice->FindPin(L"Capture",&pIn);//Get hold of the pin "Capture", as seen in GraphEdit
-	if(SUCCEEDED(hr))
-	{
-		cout<<"Capture pin found"<<endl;	
-	}
-	else HR_Failed(hr);
+	pIn = CDxHelper::getPin(pInputDevice,String(L"Capture"));
+	if(pIn) cout<<"Capture pin found"<<endl;
 
-	hr = pOutputDevice->FindPin(L"Audio Input pin (rendered)",&pOut);
-	if(SUCCEEDED(hr))
-	{
-		cout<<"Audio Input Pin (rendered) found"<<endl;
-	}
-	else HR_Failed(hr);
+	pOut = CDxHelper::getPin(pOutputDevice,String(L"Audio Input pin (rendered)"));
+	if(pOut) cout<<"Audio Input Pin (rendered) found"<<endl;
+
+
 
 	hr = pIn->Connect(pOut,NULL);	//Connect the input pin to output pin
 	if(SUCCEEDED(hr))

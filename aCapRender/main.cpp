@@ -102,31 +102,17 @@ void Device_Connect(IBaseFilter* pInputDevice,IBaseFilter* pOutputDevice)
 	IEnumPins *pInputPin = NULL,*pOutputPin  = NULL;// Pin enumeration
 	IPin *pIn = NULL, *pOut = NULL;// Pins
 
-	hr = pInputDevice->EnumPins(&pInputPin);// Enumerate the pin
+	hr = pInputDevice->FindPin(L"Capture",&pIn);//Get hold of the pin "Capture", as seen in GraphEdit
 	if(SUCCEEDED(hr))
 	{
-		cout<<"Input Pin Enumeration successful..."<<endl;
-		hr = pInputDevice->FindPin(L"Capture",&pIn);//Get hold of the pin "Capture", as seen in GraphEdit
-		if(SUCCEEDED(hr))
-		{
-			cout<<"Capture pin found"<<endl;	
-		}
-		else HR_Failed(hr);
-
+		cout<<"Capture pin found"<<endl;	
 	}
 	else HR_Failed(hr);
 
-	hr = pOutputDevice->EnumPins(&pOutputPin);//Enumerate the pin
+	hr = pOutputDevice->FindPin(L"Audio Input pin (rendered)",&pOut);
 	if(SUCCEEDED(hr))
 	{
-		cout<<"Output Pin Enumeration successful..."<<endl;
-		hr = pOutputDevice->FindPin(L"Audio Input pin (rendered)",&pOut);
-		if(SUCCEEDED(hr))
-		{
-			cout<<"Audio Input Pin (rendered) found"<<endl;
-		}
-		else HR_Failed(hr);
-
+		cout<<"Audio Input Pin (rendered) found"<<endl;
 	}
 	else HR_Failed(hr);
 

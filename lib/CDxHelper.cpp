@@ -58,3 +58,8 @@ IPin* CDxHelper::getPin(IBaseFilter* pDevice,String name)
 	else
 		return NULL;
 }
+
+HRESULT CDxHelper::connect(IPin* pPin1,IPin* pPin2)
+{
+	return pPin1->Connect(pPin2,NULL);
+}

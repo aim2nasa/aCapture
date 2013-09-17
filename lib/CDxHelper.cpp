@@ -43,3 +43,8 @@ IBaseFilter* CDxHelper::bind(IMoniker* pDeviceMonik)
 	else
 		return NULL;
 }
+
+HRESULT CDxHelper::addToGraph(IGraphBuilder* pGraph,IBaseFilter* pDevice,String name)
+{
+	return pGraph->AddFilter(pDevice,name.c_str());
+}

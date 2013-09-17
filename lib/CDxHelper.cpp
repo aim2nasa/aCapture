@@ -48,3 +48,13 @@ HRESULT CDxHelper::addToGraph(IGraphBuilder* pGraph,IBaseFilter* pDevice,String 
 {
 	return pGraph->AddFilter(pDevice,name.c_str());
 }
+
+IPin* CDxHelper::getPin(IBaseFilter* pDevice,String name)
+{
+	IPin *pPin = NULL;
+	HRESULT hr = pDevice->FindPin(name.c_str(),&pPin);
+	if(SUCCEEDED(hr))
+		return pPin;
+	else
+		return NULL;
+}

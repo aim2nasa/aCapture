@@ -1,7 +1,6 @@
 #include<iostream>
 #include<cstring>
 #include <aCapture/CDxDev.h>
-#include<windows.h>
 #include<conio.h>
 
 void HR_Failed(HRESULT hr);// hr status function

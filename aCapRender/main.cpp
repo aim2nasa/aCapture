@@ -109,8 +109,7 @@ void Device_Connect(IBaseFilter* pInputDevice,IBaseFilter* pOutputDevice)
 	if(pOut) cout<<"Audio Input Pin (rendered) found"<<endl;
 
 
-
-	hr = pIn->Connect(pOut,NULL);	//Connect the input pin to output pin
+	hr = CDxHelper::connect(pIn,pOut);
 	if(SUCCEEDED(hr))
 	{
 		cout<<"Pin connection successful..."<<endl;

@@ -10,6 +10,7 @@ public:
 	static IBaseFilter* bind(IMoniker* pDeviceMonik);
 	static HRESULT addToGraph(IGraphBuilder* pGraph,IBaseFilter* pDevice,String name);
 	static IPin* getPin(IBaseFilter* pDevice,String name);
+	static HRESULT connect(IPin* pPin1,IPin* pPin2);
 };
 
 #endif

@@ -1,9 +1,8 @@
 #include<iostream>
 #include<cstring>
-#include<dshow.h>
+#include <aCapture/CDxDev.h>
 #include<windows.h>
 #include<conio.h>
-
 
 bool Bstr_Compare(BSTR,BSTR);//Function to compare BSTR strings
 void HR_Failed(HRESULT hr);// hr status function
@@ -33,6 +32,9 @@ int main (void)
 		HR_Failed(hr);
 		return hr;
 	}
+
+	CDxDev* pDxDev = new CDxDev();
+
 	hr = CoCreateInstance(CLSID_FilterGraph, NULL, CLSCTX_INPROC_SERVER,IID_IGraphBuilder, (void**)&pGraph);//Initialize Graph builder
 	if (FAILED(hr))
 	{
@@ -86,6 +88,8 @@ int main (void)
 	pControl->Release();//Release control
 	pDeviceEnum->Release();//Release Device enumerator
 	pGraph->Release();//Release the Graph
+
+	delete pDxDev;
 }
 
 /************************************************************/

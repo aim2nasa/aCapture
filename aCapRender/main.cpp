@@ -6,10 +6,7 @@
 
 bool Bstr_Compare(BSTR,BSTR);//Function to compare BSTR strings
 void HR_Failed(HRESULT hr);// hr status function
-//IMoniker* Device_Read(ICreateDevEnum*,IMoniker*,GUID,BSTR);//Device reading function
 IMoniker* Device_Read(ICreateDevEnum*,GUID,BSTR);//Device reading function
-
-//IBaseFilter* Device_Init(IMoniker*,IBaseFilter*);//Function to initialize Input/Output devices
 IBaseFilter* Device_Init(IMoniker*);//Function to initialize Input/Output devices
 
 void Device_Addition(IGraphBuilder*,IBaseFilter*,BSTR);//Function to add device to graph
@@ -62,11 +59,7 @@ int main (void)
 	DEVICE_CLSID = CLSID_AudioInputDeviceCategory;// the input device category
 	//	bstrDeviceName = SysAllocString(L"Front Mic (IDT High Definition ");// device name as seen in Graphedit.exe
 	bstrDeviceName = SysAllocString(L"마이크(Realtek High Definition Aud");// device name as seen in Graphedit.exe
-
-//	pDeviceMonik = Device_Read(pDeviceEnum,pDeviceMonik,DEVICE_CLSID,bstrDeviceName);//read the required device 
 	pDeviceMonik = Device_Read(pDeviceEnum,DEVICE_CLSID,bstrDeviceName);//read the required device 
-
-//	pInputDevice = Device_Init(pDeviceMonik,pInputDevice);//Return the device after initializing it
 	pInputDevice = Device_Init(pDeviceMonik);//Return the device after initializing it
 
 	Device_Addition(pGraph,pInputDevice,bstrDeviceName);//add device to graph
@@ -76,11 +69,7 @@ int main (void)
 	DEVICE_CLSID = CLSID_AudioRendererCategory;// the audio renderer device category
 	//	bstrDeviceName = SysAllocString(L"Speakers/HP (IDT High Definitio");// device name as seen in Graphedit.exe
 	bstrDeviceName = SysAllocString(L"스피커(Realtek High Definition Aud");// device name as seen in Graphedit.exe
-
-//	pDeviceMonik = Device_Read(pDeviceEnum,pDeviceMonik,DEVICE_CLSID,bstrDeviceName);//read the required device
 	pDeviceMonik = Device_Read(pDeviceEnum,DEVICE_CLSID,bstrDeviceName);//read the required device
-
-//	pOutputDevice = Device_Init(pDeviceMonik,pOutputDevice);//Return the device after initializing it
 	pOutputDevice = Device_Init(pDeviceMonik);//Return the device after initializing it
 	Device_Addition(pGraph,pOutputDevice,bstrDeviceName);//add device to graph
 	SysFreeString(bstrDeviceName);
@@ -151,7 +140,6 @@ void HR_Failed(HRESULT hr)
 	return;
 }
 
-//IMoniker* Device_Read(ICreateDevEnum* pDeviceEnum,IMoniker *pDeviceMonik,GUID DEVICE_CLSID,BSTR bstrDeviceName)
 IMoniker* Device_Read(ICreateDevEnum* pDeviceEnum,GUID DEVICE_CLSID,BSTR bstrDeviceName)
 {
 	HRESULT hr;
@@ -193,7 +181,6 @@ IMoniker* Device_Read(ICreateDevEnum* pDeviceEnum,GUID DEVICE_CLSID,BSTR bstrDev
 	return NULL;
 }
 
-//IBaseFilter* Device_Init(IMoniker* pDeviceMonik,IBaseFilter* pDevice)
 IBaseFilter* Device_Init(IMoniker* pDeviceMonik)
 {
 	IBaseFilter* pDevice = NULL;

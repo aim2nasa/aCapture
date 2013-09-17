@@ -5,8 +5,6 @@
 #include<conio.h>
 
 void HR_Failed(HRESULT hr);// hr status function
-
-void Device_Addition(IGraphBuilder*,IBaseFilter*,String);//Function to add device to graph
 void Device_Connect(IBaseFilter*,IBaseFilter*);//Function to connect the two devices, in this case input and output
 void Run_Graph(IMediaControl*);//Function to run the graph
 
@@ -57,7 +55,7 @@ int main (void)
 	deviceName = L"마이크(Realtek High Definition Aud";
 	pDeviceMonik = CDxHelper::read(pDeviceEnum,DEVICE_CLSID,deviceName);//read the required device 
 	pInputDevice = CDxHelper::bind(pDeviceMonik);//Return the device after initializing it
-	Device_Addition(pGraph,pInputDevice,deviceName);//add device to graph
+	CDxHelper::addToGraph(pGraph,pInputDevice,deviceName);//add device to graph
 
 	/******************************************************************************/
 	//Default output device
@@ -65,7 +63,7 @@ int main (void)
 	deviceName = L"스피커(Realtek High Definition Aud";// device name as seen in Graphedit.exe
 	pDeviceMonik = CDxHelper::read(pDeviceEnum,DEVICE_CLSID,deviceName);//read the required device
 	pOutputDevice = CDxHelper::bind(pDeviceMonik);//Return the device after initializing it
-	Device_Addition(pGraph,pOutputDevice,deviceName);//add device to graph
+	CDxHelper::addToGraph(pGraph,pOutputDevice,deviceName);//add device to graph
 	/******************************************************************************/
 	//Connect input to output
 	Device_Connect(pInputDevice,pOutputDevice);
@@ -96,17 +94,6 @@ void HR_Failed(HRESULT hr)
 
 	MessageBox(0, szErr, TEXT("Error!"), MB_OK | MB_ICONERROR);
 	return;
-}
-
-void Device_Addition(IGraphBuilder* pGraph,IBaseFilter* pDevice,String name)
-{
-	HRESULT hr;
-	hr = pGraph->AddFilter(pDevice,name.c_str());
-	if(SUCCEEDED(hr))
-	{
-		wcout<<"Addition of "<<name<<" successful..."<<endl;
-	}
-	else HR_Failed(hr);
 }
 
 void Device_Connect(IBaseFilter* pInputDevice,IBaseFilter* pOutputDevice)

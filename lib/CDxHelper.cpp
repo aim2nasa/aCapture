@@ -33,3 +33,13 @@ IMoniker* CDxHelper::read(ICreateDevEnum* pDeviceEnum,GUID devClsid,String devic
 	}
 	return NULL;
 }
+
+IBaseFilter* CDxHelper::bind(IMoniker* pDeviceMonik)
+{
+	IBaseFilter* pDevice = NULL;
+	HRESULT hr = pDeviceMonik->BindToObject(NULL, NULL, IID_IBaseFilter,(void**)&pDevice);//Instantiate the device
+	if(SUCCEEDED(hr))
+		return pDevice;
+	else
+		return NULL;
+}

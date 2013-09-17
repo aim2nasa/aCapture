@@ -4,7 +4,6 @@
 #include<windows.h>
 #include<conio.h>
 
-bool Bstr_Compare(BSTR,BSTR);//Function to compare BSTR strings
 void HR_Failed(HRESULT hr);// hr status function
 IMoniker* Device_Read(ICreateDevEnum*,GUID,BSTR);//Device reading function
 IBaseFilter* Device_Init(IMoniker*);//Function to initialize Input/Output devices
@@ -92,41 +91,6 @@ int main (void)
 	delete pDxDev;
 }
 
-/************************************************************/
-bool Bstr_Compare(BSTR bstrFilter,BSTR bstrDevice)
-{
-	bool flag = true;
-	int strlenFilter = SysStringLen(bstrFilter);//set string length
-	int strlenDevice = SysStringLen(bstrDevice);//set string length
-	char* chrFilter = (char*)malloc(strlenFilter+1);// allocate memory
-	char* chrDevice = (char*)malloc(strlenDevice+1);// allocate memory
-	int j = 0;
-
-	if (strlenFilter!=strlenDevice)//if the strings are of not the same length,means they totall different strings
-		flag = false;//sety flag to false to indicate "not-same" strings
-	else
-	{
-		for(; j < strlenFilter;j++)//now, copy 1 by 1 each char to chrFilter and chrDevice respectively
-		{
-			chrFilter[j] = (char)bstrFilter[j];//copy
-			chrDevice[j] = (char)bstrDevice[j];//copy
-			cout<<j;
-
-		}
-		chrFilter[strlenFilter] = '\0';//add terminating character
-		chrDevice[strlenDevice] = '\0';//add terminating character
-
-		for(j=0; j < strlenFilter;j++)//check loop
-		{
-			if(chrFilter[j] != chrDevice[j])//check if there are chars that are not samne
-				flag = false;//if chars are not same, set flag to false to indicate "not-same" strings
-		}
-
-		if(flag == true && j == strlenFilter-1)//see if we went through the 'check loop' 
-			flag = true;//means strings are same
-	}
-	return flag;
-}
 void HR_Failed(HRESULT hr)
 {
 	TCHAR szErr[MAX_ERROR_TEXT_LEN];
@@ -162,8 +126,7 @@ IMoniker* Device_Read(ICreateDevEnum* pDeviceEnum,GUID DEVICE_CLSID,BSTR bstrDev
 				hr = pPropBag->Read(L"FriendlyName", &varName, 0);
 				if (SUCCEEDED(hr))
 				{	
-					if(Bstr_Compare(varName.bstrVal,bstrDeviceName) == true)//make a comparison
-					{	
+					if(String(varName.bstrVal)==String(bstrDeviceName)){
 						wcout<<varName.bstrVal<<" found"<<endl;
 						return pDeviceMonik;
 					}

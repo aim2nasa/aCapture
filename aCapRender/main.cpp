@@ -8,7 +8,7 @@ void HR_Failed(HRESULT hr);// hr status function
 IMoniker* Device_Read(ICreateDevEnum*,GUID,BSTR);//Device reading function
 IBaseFilter* Device_Init(IMoniker*);//Function to initialize Input/Output devices
 
-void Device_Addition(IGraphBuilder*,IBaseFilter*,BSTR);//Function to add device to graph
+void Device_Addition(IGraphBuilder*,IBaseFilter*,String);//Function to add device to graph
 void Device_Connect(IBaseFilter*,IBaseFilter*);//Function to connect the two devices, in this case input and output
 void Run_Graph(IMediaControl*);//Function to run the graph
 
@@ -158,13 +158,13 @@ IBaseFilter* Device_Init(IMoniker* pDeviceMonik)
 	return pDevice;
 }
 
-void Device_Addition(IGraphBuilder* pGraph,IBaseFilter* pDevice,BSTR bstrName)
+void Device_Addition(IGraphBuilder* pGraph,IBaseFilter* pDevice,String name)
 {
 	HRESULT hr;
-	hr = pGraph->AddFilter(pDevice,bstrName);
+	hr = pGraph->AddFilter(pDevice,name.c_str());
 	if(SUCCEEDED(hr))
 	{
-		wcout<<"Addition of "<<bstrName<<" successful..."<<endl;
+		wcout<<"Addition of "<<name<<" successful..."<<endl;
 	}
 	else HR_Failed(hr);
 }

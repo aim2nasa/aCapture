@@ -184,6 +184,10 @@
 				RelativePath="..\lib\CDxDev.cpp"
 				>
 			</File>
+			<File
+				RelativePath="..\lib\CDxHelper.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="헤더 파일"
@@ -192,6 +196,10 @@
 			>
 			<File
 				RelativePath="..\include\aCapture\CDxDev.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\aCapture\CDxHelper.h"
 				>
 			</File>
 		</Filter>

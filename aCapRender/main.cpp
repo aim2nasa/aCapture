@@ -24,7 +24,7 @@ int main (void)
 	IBaseFilter *pInputDevice = NULL, *pOutputDevice = NULL;// Input and output filters(devices)
 	IMoniker *pDeviceMonik = NULL;// Device moniker
 	GUID DEVICE_CLSID ;// GUID i.e.  CLSID_Xxxxxxxxxxx
-	BSTR bstrDeviceName= {'\0'};
+	String deviceName;
 
 	hr = CoInitialize(NULL);// Initialise COM
 	if (FAILED(hr))
@@ -56,22 +56,18 @@ int main (void)
 	/**********************************************************************************/
 	//Front mic input
 	DEVICE_CLSID = CLSID_AudioInputDeviceCategory;// the input device category
-	//	bstrDeviceName = SysAllocString(L"Front Mic (IDT High Definition ");// device name as seen in Graphedit.exe
-	bstrDeviceName = SysAllocString(L"마이크(Realtek High Definition Aud");// device name as seen in Graphedit.exe
-	pDeviceMonik = Device_Read(pDeviceEnum,DEVICE_CLSID,bstrDeviceName);//read the required device 
+	deviceName = L"마이크(Realtek High Definition Aud";
+	pDeviceMonik = Device_Read(pDeviceEnum,DEVICE_CLSID,deviceName);//read the required device 
 	pInputDevice = Device_Init(pDeviceMonik);//Return the device after initializing it
+	Device_Addition(pGraph,pInputDevice,deviceName);//add device to graph
 
-	Device_Addition(pGraph,pInputDevice,bstrDeviceName);//add device to graph
-	SysFreeString(bstrDeviceName);
 	/******************************************************************************/
 	//Default output device
 	DEVICE_CLSID = CLSID_AudioRendererCategory;// the audio renderer device category
-	//	bstrDeviceName = SysAllocString(L"Speakers/HP (IDT High Definitio");// device name as seen in Graphedit.exe
-	bstrDeviceName = SysAllocString(L"스피커(Realtek High Definition Aud");// device name as seen in Graphedit.exe
-	pDeviceMonik = Device_Read(pDeviceEnum,DEVICE_CLSID,bstrDeviceName);//read the required device
+	deviceName = L"스피커(Realtek High Definition Aud";// device name as seen in Graphedit.exe
+	pDeviceMonik = Device_Read(pDeviceEnum,DEVICE_CLSID,deviceName);//read the required device
 	pOutputDevice = Device_Init(pDeviceMonik);//Return the device after initializing it
-	Device_Addition(pGraph,pOutputDevice,bstrDeviceName);//add device to graph
-	SysFreeString(bstrDeviceName);
+	Device_Addition(pGraph,pOutputDevice,deviceName);//add device to graph
 	/******************************************************************************/
 	//Connect input to output
 	Device_Connect(pInputDevice,pOutputDevice);

@@ -5,7 +5,6 @@
 #include<conio.h>
 
 void HR_Failed(HRESULT hr);// hr status function
-IBaseFilter* Device_Init(IMoniker*);//Function to initialize Input/Output devices
 
 void Device_Addition(IGraphBuilder*,IBaseFilter*,String);//Function to add device to graph
 void Device_Connect(IBaseFilter*,IBaseFilter*);//Function to connect the two devices, in this case input and output
@@ -57,7 +56,7 @@ int main (void)
 	DEVICE_CLSID = CLSID_AudioInputDeviceCategory;// the input device category
 	deviceName = L"마이크(Realtek High Definition Aud";
 	pDeviceMonik = CDxHelper::read(pDeviceEnum,DEVICE_CLSID,deviceName);//read the required device 
-	pInputDevice = Device_Init(pDeviceMonik);//Return the device after initializing it
+	pInputDevice = CDxHelper::bind(pDeviceMonik);//Return the device after initializing it
 	Device_Addition(pGraph,pInputDevice,deviceName);//add device to graph
 
 	/******************************************************************************/
@@ -65,7 +64,7 @@ int main (void)
 	DEVICE_CLSID = CLSID_AudioRendererCategory;// the audio renderer device category
 	deviceName = L"스피커(Realtek High Definition Aud";// device name as seen in Graphedit.exe
 	pDeviceMonik = CDxHelper::read(pDeviceEnum,DEVICE_CLSID,deviceName);//read the required device
-	pOutputDevice = Device_Init(pDeviceMonik);//Return the device after initializing it
+	pOutputDevice = CDxHelper::bind(pDeviceMonik);//Return the device after initializing it
 	Device_Addition(pGraph,pOutputDevice,deviceName);//add device to graph
 	/******************************************************************************/
 	//Connect input to output
@@ -97,20 +96,6 @@ void HR_Failed(HRESULT hr)
 
 	MessageBox(0, szErr, TEXT("Error!"), MB_OK | MB_ICONERROR);
 	return;
-}
-
-IBaseFilter* Device_Init(IMoniker* pDeviceMonik)
-{
-	IBaseFilter* pDevice = NULL;
-	HRESULT hr;
-	hr = pDeviceMonik->BindToObject(NULL, NULL, IID_IBaseFilter,(void**)&pDevice);//Instantiate the device
-	if (SUCCEEDED(hr))
-	{
-		cout<<"Device initiation successful..."<<endl;
-	}
-	else HR_Failed(hr);
-
-	return pDevice;
 }
 
 void Device_Addition(IGraphBuilder* pGraph,IBaseFilter* pDevice,String name)

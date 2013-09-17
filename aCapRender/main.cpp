@@ -6,8 +6,12 @@
 
 bool Bstr_Compare(BSTR,BSTR);//Function to compare BSTR strings
 void HR_Failed(HRESULT hr);// hr status function
-IMoniker* Device_Read(ICreateDevEnum*,IMoniker*,GUID,BSTR);//Device reading function
-IBaseFilter* Device_Init(IMoniker*,IBaseFilter*);//Function to initialize Input/Output devices
+//IMoniker* Device_Read(ICreateDevEnum*,IMoniker*,GUID,BSTR);//Device reading function
+IMoniker* Device_Read(ICreateDevEnum*,GUID,BSTR);//Device reading function
+
+//IBaseFilter* Device_Init(IMoniker*,IBaseFilter*);//Function to initialize Input/Output devices
+IBaseFilter* Device_Init(IMoniker*);//Function to initialize Input/Output devices
+
 void Device_Addition(IGraphBuilder*,IBaseFilter*,BSTR);//Function to add device to graph
 void Device_Connect(IBaseFilter*,IBaseFilter*);//Function to connect the two devices, in this case input and output
 void Run_Graph(IMediaControl*);//Function to run the graph
@@ -59,8 +63,12 @@ int main (void)
 	//	bstrDeviceName = SysAllocString(L"Front Mic (IDT High Definition ");// device name as seen in Graphedit.exe
 	bstrDeviceName = SysAllocString(L"마이크(Realtek High Definition Aud");// device name as seen in Graphedit.exe
 
-	pDeviceMonik = Device_Read(pDeviceEnum,pDeviceMonik,DEVICE_CLSID,bstrDeviceName);//read the required device 
-	pInputDevice = Device_Init(pDeviceMonik,pInputDevice);//Return the device after initializing it
+//	pDeviceMonik = Device_Read(pDeviceEnum,pDeviceMonik,DEVICE_CLSID,bstrDeviceName);//read the required device 
+	pDeviceMonik = Device_Read(pDeviceEnum,DEVICE_CLSID,bstrDeviceName);//read the required device 
+
+//	pInputDevice = Device_Init(pDeviceMonik,pInputDevice);//Return the device after initializing it
+	pInputDevice = Device_Init(pDeviceMonik);//Return the device after initializing it
+
 	Device_Addition(pGraph,pInputDevice,bstrDeviceName);//add device to graph
 	SysFreeString(bstrDeviceName);
 	/******************************************************************************/
@@ -69,8 +77,11 @@ int main (void)
 	//	bstrDeviceName = SysAllocString(L"Speakers/HP (IDT High Definitio");// device name as seen in Graphedit.exe
 	bstrDeviceName = SysAllocString(L"스피커(Realtek High Definition Aud");// device name as seen in Graphedit.exe
 
-	pDeviceMonik = Device_Read(pDeviceEnum,pDeviceMonik,DEVICE_CLSID,bstrDeviceName);//read the required device
-	pOutputDevice = Device_Init(pDeviceMonik,pOutputDevice);//Return the device after initializing it
+//	pDeviceMonik = Device_Read(pDeviceEnum,pDeviceMonik,DEVICE_CLSID,bstrDeviceName);//read the required device
+	pDeviceMonik = Device_Read(pDeviceEnum,DEVICE_CLSID,bstrDeviceName);//read the required device
+
+//	pOutputDevice = Device_Init(pDeviceMonik,pOutputDevice);//Return the device after initializing it
+	pOutputDevice = Device_Init(pDeviceMonik);//Return the device after initializing it
 	Device_Addition(pGraph,pOutputDevice,bstrDeviceName);//add device to graph
 	SysFreeString(bstrDeviceName);
 	/******************************************************************************/
@@ -140,12 +151,13 @@ void HR_Failed(HRESULT hr)
 	return;
 }
 
-
-IMoniker* Device_Read(ICreateDevEnum* pDeviceEnum,IMoniker *pDeviceMonik,GUID DEVICE_CLSID,BSTR bstrDeviceName)
+//IMoniker* Device_Read(ICreateDevEnum* pDeviceEnum,IMoniker *pDeviceMonik,GUID DEVICE_CLSID,BSTR bstrDeviceName)
+IMoniker* Device_Read(ICreateDevEnum* pDeviceEnum,GUID DEVICE_CLSID,BSTR bstrDeviceName)
 {
 	HRESULT hr;
 	IEnumMoniker *pEnumCat = NULL;// Device enumeration moniker
 	VARIANT varName;
+	IMoniker *pDeviceMonik = NULL;
 
 	hr = pDeviceEnum->CreateClassEnumerator(DEVICE_CLSID, &pEnumCat, 0);// Enumerate the specified device, distinguished by DEVICE_CLSID
 
@@ -181,8 +193,10 @@ IMoniker* Device_Read(ICreateDevEnum* pDeviceEnum,IMoniker *pDeviceMonik,GUID DE
 	return NULL;
 }
 
-IBaseFilter* Device_Init(IMoniker* pDeviceMonik,IBaseFilter* pDevice)
+//IBaseFilter* Device_Init(IMoniker* pDeviceMonik,IBaseFilter* pDevice)
+IBaseFilter* Device_Init(IMoniker* pDeviceMonik)
 {
+	IBaseFilter* pDevice = NULL;
 	HRESULT hr;
 	hr = pDeviceMonik->BindToObject(NULL, NULL, IID_IBaseFilter,(void**)&pDevice);//Instantiate the device
 	if (SUCCEEDED(hr))

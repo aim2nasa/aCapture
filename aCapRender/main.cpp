@@ -5,7 +5,7 @@
 #include<conio.h>
 
 void HR_Failed(HRESULT hr);// hr status function
-IMoniker* Device_Read(ICreateDevEnum*,GUID,BSTR);//Device reading function
+IMoniker* Device_Read(ICreateDevEnum*,GUID,String);//Device reading function
 IBaseFilter* Device_Init(IMoniker*);//Function to initialize Input/Output devices
 
 void Device_Addition(IGraphBuilder*,IBaseFilter*,String);//Function to add device to graph
@@ -104,7 +104,7 @@ void HR_Failed(HRESULT hr)
 	return;
 }
 
-IMoniker* Device_Read(ICreateDevEnum* pDeviceEnum,GUID DEVICE_CLSID,BSTR bstrDeviceName)
+IMoniker* Device_Read(ICreateDevEnum* pDeviceEnum,GUID DEVICE_CLSID,String deviceName)
 {
 	HRESULT hr;
 	IEnumMoniker *pEnumCat = NULL;// Device enumeration moniker
@@ -126,7 +126,7 @@ IMoniker* Device_Read(ICreateDevEnum* pDeviceEnum,GUID DEVICE_CLSID,BSTR bstrDev
 				hr = pPropBag->Read(L"FriendlyName", &varName, 0);
 				if (SUCCEEDED(hr))
 				{	
-					if(String(varName.bstrVal)==String(bstrDeviceName)){
+					if(String(varName.bstrVal)==deviceName){
 						wcout<<varName.bstrVal<<" found"<<endl;
 						return pDeviceMonik;
 					}

@@ -1,10 +1,10 @@
 #include<iostream>
 #include<cstring>
 #include <aCapture/CDxDev.h>
+#include <aCapture/CDxHelper.h>
 #include<conio.h>
 
 void HR_Failed(HRESULT hr);// hr status function
-IMoniker* Device_Read(ICreateDevEnum*,GUID,String);//Device reading function
 IBaseFilter* Device_Init(IMoniker*);//Function to initialize Input/Output devices
 
 void Device_Addition(IGraphBuilder*,IBaseFilter*,String);//Function to add device to graph
@@ -56,7 +56,7 @@ int main (void)
 	//Front mic input
 	DEVICE_CLSID = CLSID_AudioInputDeviceCategory;// the input device category
 	deviceName = L"마이크(Realtek High Definition Aud";
-	pDeviceMonik = Device_Read(pDeviceEnum,DEVICE_CLSID,deviceName);//read the required device 
+	pDeviceMonik = CDxHelper::read(pDeviceEnum,DEVICE_CLSID,deviceName);//read the required device 
 	pInputDevice = Device_Init(pDeviceMonik);//Return the device after initializing it
 	Device_Addition(pGraph,pInputDevice,deviceName);//add device to graph
 
@@ -64,7 +64,7 @@ int main (void)
 	//Default output device
 	DEVICE_CLSID = CLSID_AudioRendererCategory;// the audio renderer device category
 	deviceName = L"스피커(Realtek High Definition Aud";// device name as seen in Graphedit.exe
-	pDeviceMonik = Device_Read(pDeviceEnum,DEVICE_CLSID,deviceName);//read the required device
+	pDeviceMonik = CDxHelper::read(pDeviceEnum,DEVICE_CLSID,deviceName);//read the required device
 	pOutputDevice = Device_Init(pDeviceMonik);//Return the device after initializing it
 	Device_Addition(pGraph,pOutputDevice,deviceName);//add device to graph
 	/******************************************************************************/
@@ -97,46 +97,6 @@ void HR_Failed(HRESULT hr)
 
 	MessageBox(0, szErr, TEXT("Error!"), MB_OK | MB_ICONERROR);
 	return;
-}
-
-IMoniker* Device_Read(ICreateDevEnum* pDeviceEnum,GUID DEVICE_CLSID,String deviceName)
-{
-	HRESULT hr;
-	IEnumMoniker *pEnumCat = NULL;// Device enumeration moniker
-	VARIANT varName;
-	IMoniker *pDeviceMonik = NULL;
-
-	hr = pDeviceEnum->CreateClassEnumerator(DEVICE_CLSID, &pEnumCat, 0);// Enumerate the specified device, distinguished by DEVICE_CLSID
-
-	if (hr == S_OK) 
-	{
-		ULONG cFetched;
-		while (pEnumCat->Next(1, &pDeviceMonik, &cFetched) == S_OK)//Pickup as moniker
-		{
-			IPropertyBag *pPropBag = NULL;
-			hr = pDeviceMonik->BindToStorage(0, 0, IID_IPropertyBag,(void **)&pPropBag);//bind the properties of the moniker
-			if (SUCCEEDED(hr))
-			{
-				VariantInit(&varName);// Initialise the variant data type
-				hr = pPropBag->Read(L"FriendlyName", &varName, 0);
-				if (SUCCEEDED(hr))
-				{	
-					if(String(varName.bstrVal)==deviceName){
-						wcout<<varName.bstrVal<<" found"<<endl;
-						return pDeviceMonik;
-					}
-				}
-				else HR_Failed(hr);
-				VariantClear(&varName);//clear the variant data type
-				pPropBag->Release();//release the properties
-			}
-			else HR_Failed(hr);
-			pDeviceMonik->Release();//release Device moniker
-		}
-		pEnumCat->Release();//release category enumerator
-	}
-	else HR_Failed(hr);
-	return NULL;
 }
 
 IBaseFilter* Device_Init(IMoniker* pDeviceMonik)

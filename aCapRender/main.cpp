@@ -6,10 +6,8 @@
 
 void HR_Failed(HRESULT hr);// hr status function
 void Device_Connect(IBaseFilter*,IBaseFilter*);//Function to connect the two devices, in this case input and output
-void Run_Graph(IMediaControl*);//Function to run the graph
 
 using namespace std;
-
 
 int main (void)
 {
@@ -49,6 +47,7 @@ int main (void)
 		HR_Failed(hr);
 		return hr;
 	}
+
 	/**********************************************************************************/
 	//Front mic input
 	DEVICE_CLSID = CLSID_AudioInputDeviceCategory;// the input device category
@@ -64,12 +63,15 @@ int main (void)
 	pDeviceMonik = CDxHelper::read(pDeviceEnum,DEVICE_CLSID,deviceName);//read the required device
 	pOutputDevice = CDxHelper::bind(pDeviceMonik);//Return the device after initializing it
 	CDxHelper::addToGraph(pGraph,pOutputDevice,deviceName);//add device to graph
+
 	/******************************************************************************/
 	//Connect input to output
 	Device_Connect(pInputDevice,pOutputDevice);
+
 	/*******************************************************************************/
 	//Now run the graph
-	Run_Graph(pControl);
+	if(SUCCEEDED(CDxHelper::run(pControl)))
+		cout<<"You must be listening to something!!!"<<endl;
 
 	//Loop till you don't close the console window or hit a key!
 	cout<<"Close the window to exit or hit any key"<<endl;
@@ -116,15 +118,4 @@ void Device_Connect(IBaseFilter* pInputDevice,IBaseFilter* pOutputDevice)
 	}
 	else HR_Failed(hr);
 
-}
-
-void Run_Graph(IMediaControl* pControl)
-{
-	HRESULT hr;
-	hr = pControl->Run();// Now run the graph, i.e. start listening!
-	if(SUCCEEDED(hr))
-	{
-		cout<<"You must be listening to something!!!"<<endl;
-	}
-	else HR_Failed(hr);
 }

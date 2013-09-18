@@ -5,7 +5,6 @@
 #include<conio.h>
 
 void HR_Failed(HRESULT hr);// hr status function
-void Device_Connect(IBaseFilter*,IBaseFilter*);//Function to connect the two devices, in this case input and output
 
 using namespace std;
 
@@ -66,7 +65,8 @@ int main (void)
 
 	/******************************************************************************/
 	//Connect input to output
-	Device_Connect(pInputDevice,pOutputDevice);
+	if(SUCCEEDED(CDxHelper::conFilter(pInputDevice,String(L"Capture"),pOutputDevice,String(L"Audio Input pin (rendered)"))))
+		cout<<"Two filters are connected"<<endl;
 
 	/*******************************************************************************/
 	//Now run the graph
@@ -96,26 +96,4 @@ void HR_Failed(HRESULT hr)
 
 	MessageBox(0, szErr, TEXT("Error!"), MB_OK | MB_ICONERROR);
 	return;
-}
-
-void Device_Connect(IBaseFilter* pInputDevice,IBaseFilter* pOutputDevice)
-{
-	HRESULT hr;
-	IEnumPins *pInputPin = NULL,*pOutputPin  = NULL;// Pin enumeration
-	IPin *pIn = NULL, *pOut = NULL;// Pins
-
-	pIn = CDxHelper::getPin(pInputDevice,String(L"Capture"));
-	if(pIn) cout<<"Capture pin found"<<endl;
-
-	pOut = CDxHelper::getPin(pOutputDevice,String(L"Audio Input pin (rendered)"));
-	if(pOut) cout<<"Audio Input Pin (rendered) found"<<endl;
-
-
-	hr = CDxHelper::connect(pIn,pOut);
-	if(SUCCEEDED(hr))
-	{
-		cout<<"Pin connection successful..."<<endl;
-	}
-	else HR_Failed(hr);
-
 }

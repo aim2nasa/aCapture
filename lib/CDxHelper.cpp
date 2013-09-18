@@ -49,10 +49,10 @@ HRESULT CDxHelper::addToGraph(IGraphBuilder* pGraph,IBaseFilter* pDevice,String 
 	return pGraph->AddFilter(pDevice,name.c_str());
 }
 
-IPin* CDxHelper::getPin(IBaseFilter* pDevice,String name)
+IPin* CDxHelper::getPin(IBaseFilter* pDevice,String pinName)
 {
 	IPin *pPin = NULL;
-	HRESULT hr = pDevice->FindPin(name.c_str(),&pPin);
+	HRESULT hr = pDevice->FindPin(pinName.c_str(),&pPin);
 	if(SUCCEEDED(hr))
 		return pPin;
 	else
@@ -67,4 +67,15 @@ HRESULT CDxHelper::connect(IPin* pPin1,IPin* pPin2)
 HRESULT CDxHelper::run(IMediaControl* pCtrl)
 {
 	return pCtrl->Run();
+}
+
+HRESULT CDxHelper::conFilter(IBaseFilter* pInpDev,String inpPinName,IBaseFilter* pOutDev,String outPinName)
+{
+	IPin *pIn = CDxHelper::getPin(pInpDev,inpPinName);
+	if(!pIn) return E_FAIL;
+
+	IPin *pOut = CDxHelper::getPin(pOutDev,outPinName);
+	if(!pOut) return E_FAIL;
+
+	return CDxHelper::connect(pIn,pOut);
 }

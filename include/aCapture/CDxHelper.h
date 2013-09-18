@@ -9,9 +9,10 @@ public:
 	static IMoniker* read(ICreateDevEnum* pDeviceEnum,GUID devClsid,String deviceName);
 	static IBaseFilter* bind(IMoniker* pDeviceMonik);
 	static HRESULT addToGraph(IGraphBuilder* pGraph,IBaseFilter* pDevice,String name);
-	static IPin* getPin(IBaseFilter* pDevice,String name);
+	static IPin* getPin(IBaseFilter* pDevice,String pinName);
 	static HRESULT connect(IPin* pPin1,IPin* pPin2);
 	static HRESULT run(IMediaControl* pCtrl);
+	static HRESULT conFilter(IBaseFilter* pInpDev,String inpPinName,IBaseFilter* pOutDev,String outPinName);
 };
 
 #endif

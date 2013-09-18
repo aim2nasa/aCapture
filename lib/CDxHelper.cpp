@@ -63,3 +63,8 @@ HRESULT CDxHelper::connect(IPin* pPin1,IPin* pPin2)
 {
 	return pPin1->Connect(pPin2,NULL);
 }
+
+HRESULT CDxHelper::run(IMediaControl* pCtrl)
+{
+	return pCtrl->Run();
+}

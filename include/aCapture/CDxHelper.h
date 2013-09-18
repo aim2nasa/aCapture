@@ -11,6 +11,7 @@ public:
 	static HRESULT addToGraph(IGraphBuilder* pGraph,IBaseFilter* pDevice,String name);
 	static IPin* getPin(IBaseFilter* pDevice,String name);
 	static HRESULT connect(IPin* pPin1,IPin* pPin2);
+	static HRESULT run(IMediaControl* pCtrl);
 };
 
 #endif

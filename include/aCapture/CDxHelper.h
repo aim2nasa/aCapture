@@ -2,7 +2,6 @@
 #define __CDXHELPER_H__
 
 #include <aCapture/typedef.h>
-#include <dshow.h>
 
 class DLLEXP CDxHelper{
 public:

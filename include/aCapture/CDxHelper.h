@@ -6,7 +6,7 @@
 
 class DLLEXP CDxHelper{
 public:
-	static IMoniker* read(ICreateDevEnum* pDeviceEnum,GUID devClsid,String deviceName);
+	static HRESULT read(ICreateDevEnum* pDeviceEnum,GUID devClsid,String deviceName,IMoniker** ppOutMoniker);
 	static IBaseFilter* bind(IMoniker* pDeviceMonik);
 	static HRESULT addToGraph(IGraphBuilder* pGraph,IBaseFilter* pDevice,String name);
 	static IPin* getPin(IBaseFilter* pDevice,String pinName);

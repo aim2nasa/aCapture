@@ -9,7 +9,7 @@ public:
 	static HRESULT read(ICreateDevEnum* pDeviceEnum,GUID devClsid,String deviceName,IMoniker** ppOutMoniker);
 	static HRESULT bind(IMoniker* pDeviceMonik,IBaseFilter** ppOutFilter);
 	static HRESULT addToGraph(IGraphBuilder* pGraph,IBaseFilter* pDevice,String name);
-	static IPin* getPin(IBaseFilter* pDevice,String pinName);
+	static HRESULT getPin(IBaseFilter* pDevice,String pinName,IPin** ppOutPin);
 	static HRESULT connect(IPin* pPin1,IPin* pPin2);
 	static HRESULT run(IMediaControl* pCtrl);
 	static HRESULT conFilter(IBaseFilter* pInpDev,String inpPinName,IBaseFilter* pOutDev,String outPinName);

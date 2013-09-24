@@ -2,6 +2,7 @@
 
 HRESULT CDxHelper::read(ICreateDevEnum* pDeviceEnum,GUID devClsid,String deviceName,IMoniker** ppOutMoniker)
 {
+	*ppOutMoniker = NULL;
 	IEnumMoniker *pEnumCat = NULL;// Device enumeration moniker
 	HRESULT hr = pDeviceEnum->CreateClassEnumerator(devClsid, &pEnumCat, 0);// Enumerate the specified device, distinguished by DEVICE_CLSID
 
@@ -35,14 +36,11 @@ HRESULT CDxHelper::read(ICreateDevEnum* pDeviceEnum,GUID devClsid,String deviceN
 	return hr;
 }
 
-IBaseFilter* CDxHelper::bind(IMoniker* pDeviceMonik)
+HRESULT CDxHelper::bind(IMoniker* pDeviceMonik,IBaseFilter** ppOutFilter)
 {
-	IBaseFilter* pDevice = NULL;
-	HRESULT hr = pDeviceMonik->BindToObject(NULL, NULL, IID_IBaseFilter,(void**)&pDevice);//Instantiate the device
-	if(SUCCEEDED(hr))
-		return pDevice;
-	else
-		return NULL;
+	*ppOutFilter = NULL;
+	HRESULT hr = pDeviceMonik->BindToObject(NULL, NULL, IID_IBaseFilter,(void**)ppOutFilter);	//Instantiate the device
+	return hr;
 }
 
 HRESULT CDxHelper::addToGraph(IGraphBuilder* pGraph,IBaseFilter* pDevice,String name)

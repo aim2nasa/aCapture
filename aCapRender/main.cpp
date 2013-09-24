@@ -57,7 +57,12 @@ int main (void)
 		HR_Failed(hr);
 		return hr;
 	}
-	pInputDevice = CDxHelper::bind(pDeviceMonik);//Return the device after initializing it
+	hr = CDxHelper::bind(pDeviceMonik,&pInputDevice);//Return the device after initializing it
+	if (FAILED(hr))
+	{
+		HR_Failed(hr);
+		return hr;
+	}
 	CDxHelper::addToGraph(pGraph,pInputDevice,deviceName);//add device to graph
 
 	/******************************************************************************/
@@ -70,7 +75,12 @@ int main (void)
 		HR_Failed(hr);
 		return hr;
 	}
-	pOutputDevice = CDxHelper::bind(pDeviceMonik);//Return the device after initializing it
+	hr = CDxHelper::bind(pDeviceMonik,&pOutputDevice);//Return the device after initializing it
+	if (FAILED(hr))
+	{
+		HR_Failed(hr);
+		return hr;
+	}
 	CDxHelper::addToGraph(pGraph,pOutputDevice,deviceName);//add device to graph
 
 	/******************************************************************************/

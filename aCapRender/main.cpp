@@ -96,7 +96,7 @@ int main (void)
 	/*******************************************************************************/
 	//Now run the graph
 	hr = CDxHelper::run(pControl);
-	if(SUCCEEDED())
+	if(SUCCEEDED(hr))
 		cout<<"You must be listening to something!!!"<<endl;
 	else{
 		HR_Failed(hr);

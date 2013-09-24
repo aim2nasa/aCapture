@@ -1,8 +1,8 @@
-#include<iostream>
-#include<cstring>
+#include <iostream>
+#include <cstring>
 #include <aCapture/CDxDev.h>
 #include <aCapture/CDxHelper.h>
-#include<conio.h>
+#include <conio.h>
 
 void HR_Failed(HRESULT hr);// hr status function
 

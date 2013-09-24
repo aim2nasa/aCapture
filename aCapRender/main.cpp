@@ -51,7 +51,12 @@ int main (void)
 	//Front mic input
 	DEVICE_CLSID = CLSID_AudioInputDeviceCategory;// the input device category
 	deviceName = L"마이크(Realtek High Definition Aud";
-	pDeviceMonik = CDxHelper::read(pDeviceEnum,DEVICE_CLSID,deviceName);//read the required device 
+	hr = CDxHelper::read(pDeviceEnum,DEVICE_CLSID,deviceName,&pDeviceMonik);//read the required device 
+	if (FAILED(hr))
+	{
+		HR_Failed(hr);
+		return hr;
+	}
 	pInputDevice = CDxHelper::bind(pDeviceMonik);//Return the device after initializing it
 	CDxHelper::addToGraph(pGraph,pInputDevice,deviceName);//add device to graph
 
@@ -59,7 +64,12 @@ int main (void)
 	//Default output device
 	DEVICE_CLSID = CLSID_AudioRendererCategory;// the audio renderer device category
 	deviceName = L"스피커(Realtek High Definition Aud";// device name as seen in Graphedit.exe
-	pDeviceMonik = CDxHelper::read(pDeviceEnum,DEVICE_CLSID,deviceName);//read the required device
+	hr = CDxHelper::read(pDeviceEnum,DEVICE_CLSID,deviceName,&pDeviceMonik);//read the required device
+	if (FAILED(hr))
+	{
+		HR_Failed(hr);
+		return hr;
+	}
 	pOutputDevice = CDxHelper::bind(pDeviceMonik);//Return the device after initializing it
 	CDxHelper::addToGraph(pGraph,pOutputDevice,deviceName);//add device to graph
 

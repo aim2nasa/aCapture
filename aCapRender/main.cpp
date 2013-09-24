@@ -20,8 +20,7 @@ int main (void)
 	String deviceName;
 
 	hr = CoInitialize(NULL);// Initialise COM
-	if (FAILED(hr))
-	{
+	if(FAILED(hr)){
 		HR_Failed(hr);
 		return hr;
 	}
@@ -29,20 +28,17 @@ int main (void)
 	CDxDev* pDxDev = new CDxDev();
 
 	hr = CoCreateInstance(CLSID_FilterGraph, NULL, CLSCTX_INPROC_SERVER,IID_IGraphBuilder, (void**)&pGraph);//Initialize Graph builder
-	if (FAILED(hr))
-	{
+	if(FAILED(hr)){
 		HR_Failed(hr);
 		return hr;
 	}
 	hr = CoCreateInstance(CLSID_SystemDeviceEnum, NULL, CLSCTX_INPROC_SERVER,IID_ICreateDevEnum, (void **)&pDeviceEnum);//Initialize Device enumerator
-	if (FAILED(hr))
-	{
+	if(FAILED(hr)){
 		HR_Failed(hr);
 		return hr;
 	}
 	hr = pGraph->QueryInterface(IID_IMediaControl,(void**)&pControl);// Query interface for IMediaControl
-	if (FAILED(hr))
-	{
+	if(FAILED(hr)){
 		HR_Failed(hr);
 		return hr;
 	}
@@ -52,46 +48,60 @@ int main (void)
 	DEVICE_CLSID = CLSID_AudioInputDeviceCategory;// the input device category
 	deviceName = L"마이크(Realtek High Definition Aud";
 	hr = CDxHelper::read(pDeviceEnum,DEVICE_CLSID,deviceName,&pDeviceMonik);//read the required device 
-	if (FAILED(hr))
-	{
+	if(FAILED(hr)){
 		HR_Failed(hr);
 		return hr;
 	}
 	hr = CDxHelper::bind(pDeviceMonik,&pInputDevice);//Return the device after initializing it
-	if (FAILED(hr))
-	{
+	if(FAILED(hr)){
 		HR_Failed(hr);
 		return hr;
 	}
-	CDxHelper::addToGraph(pGraph,pInputDevice,deviceName);//add device to graph
+	hr = CDxHelper::addToGraph(pGraph,pInputDevice,deviceName);//add device to graph
+	if(FAILED(hr)){
+		HR_Failed(hr);
+		return hr;
+	}
 
 	/******************************************************************************/
 	//Default output device
 	DEVICE_CLSID = CLSID_AudioRendererCategory;// the audio renderer device category
 	deviceName = L"스피커(Realtek High Definition Aud";// device name as seen in Graphedit.exe
 	hr = CDxHelper::read(pDeviceEnum,DEVICE_CLSID,deviceName,&pDeviceMonik);//read the required device
-	if (FAILED(hr))
-	{
+	if(FAILED(hr)){
 		HR_Failed(hr);
 		return hr;
 	}
 	hr = CDxHelper::bind(pDeviceMonik,&pOutputDevice);//Return the device after initializing it
-	if (FAILED(hr))
-	{
+	if(FAILED(hr)){
 		HR_Failed(hr);
 		return hr;
 	}
-	CDxHelper::addToGraph(pGraph,pOutputDevice,deviceName);//add device to graph
+	hr = CDxHelper::addToGraph(pGraph,pOutputDevice,deviceName);//add device to graph
+	if(FAILED(hr)){
+		HR_Failed(hr);
+		return hr;
+	}
 
 	/******************************************************************************/
 	//Connect input to output
-	if(SUCCEEDED(CDxHelper::conFilter(pInputDevice,String(L"Capture"),pOutputDevice,String(L"Audio Input pin (rendered)"))))
+	hr = CDxHelper::conFilter(pInputDevice,String(L"Capture"),pOutputDevice,String(L"Audio Input pin (rendered)"));
+	if(SUCCEEDED(hr)) 
 		cout<<"Two filters are connected"<<endl;
+	else{
+		HR_Failed(hr);
+		return hr;
+	}
 
 	/*******************************************************************************/
 	//Now run the graph
-	if(SUCCEEDED(CDxHelper::run(pControl)))
+	hr = CDxHelper::run(pControl);
+	if(SUCCEEDED())
 		cout<<"You must be listening to something!!!"<<endl;
+	else{
+		HR_Failed(hr);
+		return hr;
+	}
 
 	//Loop till you don't close the console window or hit a key!
 	cout<<"Close the window to exit or hit any key"<<endl;

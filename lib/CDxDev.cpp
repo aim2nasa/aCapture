@@ -19,15 +19,21 @@ CName::~CName()
 }
 
 CDxDev::CDxDev()
-:m_pDeviceEnum(NULL)
+:m_pDeviceEnum(NULL),m_pGraph(NULL)
 {
-	HRESULT hr = CoCreateInstance(CLSID_SystemDeviceEnum, NULL, CLSCTX_INPROC_SERVER, IID_ICreateDevEnum, (void**)&m_pDeviceEnum);
+	HRESULT hr;
+	hr = CoCreateInstance(CLSID_SystemDeviceEnum, NULL, CLSCTX_INPROC_SERVER, IID_ICreateDevEnum, (void**)&m_pDeviceEnum);
 	assert(SUCCEEDED(hr));
 	assert(m_pDeviceEnum);
+
+	hr = CoCreateInstance(CLSID_FilterGraph, NULL, CLSCTX_INPROC_SERVER,IID_IGraphBuilder, (void**)&m_pGraph);
+	assert(SUCCEEDED(hr));
+	assert(m_pGraph);
 }
 
 CDxDev::~CDxDev()
 {
+	m_pGraph->Release();
 	m_pDeviceEnum->Release();
 }
 

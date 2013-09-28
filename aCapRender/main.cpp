@@ -63,6 +63,8 @@ int main (void)
 		return hr;
 	}
 
+	pDxDev->add(DEVICE_CLSID,deviceName);
+
 	/******************************************************************************/
 	//Default output device
 	DEVICE_CLSID = CLSID_AudioRendererCategory;// the audio renderer device category

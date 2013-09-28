@@ -18,6 +18,17 @@ public:
 
 class DLLEXP CDxDev{
 public:
+	class CFilter{
+	public:
+		CFilter():m_pMonik(NULL),m_pFilter(NULL){}
+		CFilter(IMoniker *pMon):m_pMonik(pMon),m_pFilter(NULL){}
+		CFilter(IMoniker *pMon,IBaseFilter *pFilter):m_pMonik(pMon),m_pFilter(pFilter){}
+		virtual ~CFilter(){}
+
+		IMoniker*		m_pMonik;
+		IBaseFilter*	m_pFilter;
+	};
+
 	CDxDev();
 	virtual ~CDxDev();
 
@@ -25,25 +36,17 @@ public:
 	String errorMsg();
 
 	HRESULT devRead(REFCLSID clsidDeviceClass);
-
 	std::list<CName>& names();
 
-	class CDev{
-	public:
-		CDev():m_pMonik(NULL),m_pFilter(NULL){}
-		virtual ~CDev(){}
-
-		IMoniker*		m_pMonik;
-		IBaseFilter*	m_pFilter;
-	};
+	bool add(GUID devClsid,String devName);
 
 protected:
-	String					m_errorMsg;
-	std::list<CName>		m_names;
-	ICreateDevEnum*			m_pDeviceEnum;
-	IGraphBuilder*			m_pGraph;
-	IMediaControl*			m_pControl;
-	std::map<String,CDev>	m_map;
+	String						m_errorMsg;
+	std::list<CName>			m_names;
+	ICreateDevEnum*				m_pDeviceEnum;
+	IGraphBuilder*				m_pGraph;
+	IMediaControl*				m_pControl;
+	std::map<String,CFilter>	m_map;
 };
 
 #endif

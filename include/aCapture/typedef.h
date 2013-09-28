@@ -17,6 +17,7 @@ typedef long				Long;
 
 #include <string>
 #include <tchar.h>
+#include <dshow.h>
 
 #ifndef _UNICODE
 	typedef std::string			String; 

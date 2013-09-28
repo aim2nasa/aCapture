@@ -1,4 +1,5 @@
 #include <aCapture/CDxDev.h>
+#include <aCapture/CDxHelper.h>
 #include <atlbase.h>
 #include <assert.h>
 
@@ -103,4 +104,25 @@ HRESULT CDxDev::devRead(REFCLSID clsidDeviceClass)
 std::list<CName>& CDxDev::names()
 {
 	return m_names;
+}
+
+bool CDxDev::add(GUID devClsid,String devName)
+{
+	IMoniker *pMonik = NULL;
+	HRESULT hr = CDxHelper::read(m_pDeviceEnum,devClsid,devName,&pMonik);
+	if(FAILED(hr)) {
+		hrFailed(hr);
+		return false;
+	}
+	
+	IBaseFilter *pFilter = NULL;
+	hr = CDxHelper::bind(pMonik,&pFilter);
+	if(FAILED(hr)) {
+		hrFailed(hr);
+		return false;
+	}
+
+	std::pair<std::map<String,CFilter>::iterator,bool> ret;
+	ret = m_map.insert(std::pair<String,CFilter>(devName,CFilter(pMonik,pFilter)));
+	return ret.second;
 }

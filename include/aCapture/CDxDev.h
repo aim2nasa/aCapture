@@ -4,6 +4,7 @@
 #include <aCapture/typedef.h>
 #include <dshow.h>
 #include <list>
+#include <map>
 
 class DLLEXP CName{
 public:
@@ -27,12 +28,22 @@ public:
 
 	std::list<CName>& names();
 
+	class CDev{
+	public:
+		CDev():m_pMonik(NULL),m_pFilter(NULL){}
+		virtual ~CDev(){}
+
+		IMoniker*		m_pMonik;
+		IBaseFilter*	m_pFilter;
+	};
+
 protected:
-	String				m_errorMsg;
-	std::list<CName>	m_names;
-	ICreateDevEnum*		m_pDeviceEnum;
-	IGraphBuilder*		m_pGraph;
-	IMediaControl*		m_pControl;
+	String					m_errorMsg;
+	std::list<CName>		m_names;
+	ICreateDevEnum*			m_pDeviceEnum;
+	IGraphBuilder*			m_pGraph;
+	IMediaControl*			m_pControl;
+	std::map<String,CDev>	m_map;
 };
 
 #endif

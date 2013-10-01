@@ -10,6 +10,8 @@ using namespace std;
 
 int main (void)
 {
+	setlocale(LC_ALL,"Korean");
+
 	HRESULT hr;	// COM result
 	IGraphBuilder *pGraph = NULL;// Main graphbuilder pointer
 	IMediaControl *pControl = NULL;	// Media Control interface
@@ -63,7 +65,11 @@ int main (void)
 		return hr;
 	}
 
-	pDxDev->add(DEVICE_CLSID,deviceName);
+	if(pDxDev->add(DEVICE_CLSID,deviceName)) {
+		wcout<<"<"<<deviceName<<"> added"<<endl;
+	}else{
+		wcout<<"<"<<deviceName<<"> add failed :"<<pDxDev->errorMsg()<<endl;
+	}
 
 	/******************************************************************************/
 	//Default output device
@@ -89,7 +95,7 @@ int main (void)
 	//Connect input to output
 	hr = CDxHelper::conFilter(pInputDevice,String(L"Capture"),pOutputDevice,String(L"Audio Input pin (rendered)"));
 	if(SUCCEEDED(hr)) 
-		cout<<"Two filters are connected"<<endl;
+		wcout<<"Two filters are connected"<<endl;
 	else{
 		HR_Failed(hr);
 		return hr;
@@ -99,14 +105,14 @@ int main (void)
 	//Now run the graph
 	hr = CDxHelper::run(pControl);
 	if(SUCCEEDED(hr))
-		cout<<"You must be listening to something!!!"<<endl;
+		wcout<<"You must be listening to something!!!"<<endl;
 	else{
 		HR_Failed(hr);
 		return hr;
 	}
 
 	//Loop till you don't close the console window or hit a key!
-	cout<<"Close the window to exit or hit any key"<<endl;
+	wcout<<"Close the window to exit or hit any key"<<endl;
 	while(!_kbhit())
 	{
 	}

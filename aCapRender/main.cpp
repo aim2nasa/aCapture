@@ -53,7 +53,7 @@ int main (void)
 		return 1;
 	}
 
-	wcout<<"Close the window to exit or hit any key"<<endl;
+	wcout<<"Hit any key to exit"<<endl;
 	while(!_kbhit())
 	{
 	}

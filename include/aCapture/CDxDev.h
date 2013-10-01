@@ -39,6 +39,9 @@ public:
 	std::list<CName>& names();
 
 	bool add(GUID devClsid,String devName);
+	CFilter* get(String devName);
+	bool connect(String dev1,String dev1Pin,String dev2,String dev2Pin);
+	bool run();
 
 protected:
 	String						m_errorMsg;

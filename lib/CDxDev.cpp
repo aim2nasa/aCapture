@@ -122,8 +122,55 @@ bool CDxDev::add(GUID devClsid,String devName)
 		return false;
 	}
 
+	hr = CDxHelper::addToGraph(m_pGraph,pFilter,devName);
+	if(FAILED(hr)){
+		hrFailed(hr);
+		return false;
+	}
+
 	std::pair<std::map<String,CFilter>::iterator,bool> ret;
 	ret = m_map.insert(std::pair<String,CFilter>(devName,CFilter(pMonik,pFilter)));
 	if(!ret.second) m_errorMsg = String(_T("insert to map failed "))+devName;
 	return ret.second;
+}
+
+CDxDev::CFilter* CDxDev::get(String devName)
+{
+	std::map<String,CFilter>::iterator it = m_map.find(devName);
+	if(it!=m_map.end()) return &it->second;
+	return NULL;
+}
+
+bool CDxDev::connect(String devName1,String dev1Pin,String devName2,String dev2Pin)
+{
+	CDxDev::CFilter *pFilter1 = get(devName1);
+	if(!pFilter1) {
+		m_errorMsg = String(_T("could not find filter:"))+devName1;
+		return false;
+	}
+
+	CDxDev::CFilter *pFilter2 = get(devName2);
+	if(!pFilter2) {
+		m_errorMsg = String(_T("could not find filter:"))+devName2;
+		return false;
+	}
+
+	HRESULT hr = CDxHelper::conFilter(pFilter1->m_pFilter,dev1Pin,pFilter2->m_pFilter,dev2Pin);
+	if(FAILED(hr)) {
+		hrFailed(hr);
+		m_errorMsg += String(_T(",conFilter failed between pin1="))+dev1Pin+String(_T(" of "))+devName1;
+		m_errorMsg += String(_T(",pin2="))+dev2Pin+String(_T(" of "))+devName2;
+		return false;
+	}
+	return true;
+}
+
+bool CDxDev::run()
+{
+	HRESULT hr = CDxHelper::run(m_pControl);
+	if(FAILED(hr)) {
+		hrFailed(hr);
+		return false;
+	}
+	return true;
 }

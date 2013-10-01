@@ -124,5 +124,6 @@ bool CDxDev::add(GUID devClsid,String devName)
 
 	std::pair<std::map<String,CFilter>::iterator,bool> ret;
 	ret = m_map.insert(std::pair<String,CFilter>(devName,CFilter(pMonik,pFilter)));
+	if(!ret.second) m_errorMsg = String(_T("insert to map failed "))+devName;
 	return ret.second;
 }

@@ -33,7 +33,7 @@ HRESULT CDxHelper::read(ICreateDevEnum* pDeviceEnum,GUID devClsid,String deviceN
 		}
 		pEnumCat->Release();//release category enumerator
 	}
-	return hr;
+	return E_FAIL;
 }
 
 HRESULT CDxHelper::bind(IMoniker* pDeviceMonik,IBaseFilter** ppOutFilter)

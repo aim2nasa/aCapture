@@ -15,10 +15,9 @@ int main (void)
 	CDxDev* pDxDev = new CDxDev();
 
 	//Front mic input
-	GUID DEVICE_CLSID = CLSID_AudioInputDeviceCategory;	//the input device category
 	String deviceName1(_T("마이크(Realtek High Definition Aud"));
 
-	if(pDxDev->add(DEVICE_CLSID,deviceName1)) {
+	if(pDxDev->add(CLSID_AudioInputDeviceCategory,deviceName1)) {
 		wcout<<"<"<<deviceName1<<"> added"<<endl;
 	}else{
 		wcout<<"<"<<deviceName1<<"> add failed :"<<pDxDev->errorMsg()<<endl;
@@ -26,10 +25,9 @@ int main (void)
 	}
 
 	//Default output device
-	DEVICE_CLSID = CLSID_AudioRendererCategory;	//the audio renderer device category
 	String deviceName2(_T("스피커(Realtek High Definition Aud"));
 
-	if(pDxDev->add(DEVICE_CLSID,deviceName2)) {
+	if(pDxDev->add(CLSID_AudioRendererCategory,deviceName2)) {
 		wcout<<"<"<<deviceName2<<"> added"<<endl;
 	}else{
 		wcout<<"<"<<deviceName2<<"> add failed :"<<pDxDev->errorMsg()<<endl;

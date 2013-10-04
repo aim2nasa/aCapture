@@ -49,7 +49,6 @@ public:
 
 protected:
 	String						m_errorMsg;
-	std::list<CName>			m_names;
 	ICreateDevEnum*				m_pDeviceEnum;
 	IGraphBuilder*				m_pGraph;
 	IMediaControl*				m_pControl;

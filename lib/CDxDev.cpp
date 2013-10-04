@@ -58,8 +58,9 @@ void CDxDev::hrFailed(HRESULT hr)
 	}
 }
 
-HRESULT CDxDev::devRead(REFCLSID clsidDeviceClass)
+bool CDxDev::devRead(REFCLSID clsidDeviceClass)
 {
+	NameList names;
 	CComPtr <IEnumMoniker> pEnumCat;
 	VARIANT varName;
 
@@ -90,6 +91,7 @@ HRESULT CDxDev::devRead(REFCLSID clsidDeviceClass)
 				VariantClear(&varName);
 
 				m_names.push_back(name);
+				names.push_back(name);
 			}else {
 				hrFailed(hr);
 			}
@@ -98,7 +100,13 @@ HRESULT CDxDev::devRead(REFCLSID clsidDeviceClass)
 	}else{
 		hrFailed(hr);
 	}
-	return hr;
+
+	wchar_t clsid[128];
+	StringFromGUID2(clsidDeviceClass,clsid,sizeof(clsid)/sizeof(wchar_t));
+	std::pair<std::map<String,NameList>::iterator,bool> ret;
+	ret = m_clsidMap.insert(std::pair<String,NameList>(String(clsid),names));
+	if(!ret.second) m_errorMsg = String(_T("insert to map failed "))+String(clsid);
+	return ret.second;
 }
 
 NameList& CDxDev::names()

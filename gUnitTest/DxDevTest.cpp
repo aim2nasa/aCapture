@@ -8,8 +8,8 @@ TEST(devRead,DxDevTest)
 	CoInitialize(NULL);
 
 	CDxDev dev;
-	HRESULT hr = dev.devRead(CLSID_AudioInputDeviceCategory);
-	if(FAILED(hr)) { FAIL(); }
+	bool b = dev.devRead(CLSID_AudioInputDeviceCategory);
+	EXPECT_EQ(b,true);
 
 	//하나 이상이 나오면 반드시 오든 것들은 이름이 나와야 한다
 	NameList names = dev.names();

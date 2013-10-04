@@ -37,7 +37,7 @@ public:
 	void hrFailed(HRESULT hr);
 	String errorMsg();
 
-	HRESULT devRead(REFCLSID clsidDeviceClass);
+	bool devRead(REFCLSID clsidDeviceClass);
 	NameList& names();
 
 	bool add(GUID devClsid,String devName);
@@ -52,7 +52,7 @@ protected:
 	IGraphBuilder*				m_pGraph;
 	IMediaControl*				m_pControl;
 	std::map<String,CFilter>	m_map;
-//	std::map<REFCLSID,NameList>	m_
+	std::map<String,NameList>	m_clsidMap;
 };
 
 #endif

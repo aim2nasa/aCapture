@@ -3,8 +3,8 @@
 
 void read(CDxDev* pDev,String devName,REFCLSID clsidDeviceClass)
 {
-	HRESULT hr = pDev->devRead(clsidDeviceClass);
-	if(FAILED(hr)){
+	bool b = pDev->devRead(clsidDeviceClass);
+	if(!b){
 		std::wcout<<L"Error: "<<pDev->errorMsg()<<std::endl;
 		return;
 	}

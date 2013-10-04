@@ -9,10 +9,10 @@ void read(CDxDev* pDev,String devName,REFCLSID clsidDeviceClass)
 		return;
 	}
 
-	std::list<CName> names = pDev->names();
-	std::wcout<<L"CLSID:"<<devName<<" ,Devices :"<<names.size()<<std::endl;
+	NameList* pNames = pDev->names(clsidDeviceClass);
+	std::wcout<<L"CLSID:"<<devName<<" ,Devices :"<<pNames->size()<<std::endl;
 
-	for(std::list<CName>::iterator it=names.begin();it!=names.end();it++){
+	for(std::list<CName>::iterator it=pNames->begin();it!=pNames->end();it++){
 		std::wcout<<"\tname:"<<(*it).m_friendly<<std::endl;
 	}
 }

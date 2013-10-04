@@ -16,6 +16,8 @@ public:
 	String	m_full;
 };
 
+typedef std::list<CName> NameList;
+
 class DLLEXP CDxDev{
 public:
 	class CFilter{
@@ -36,7 +38,7 @@ public:
 	String errorMsg();
 
 	HRESULT devRead(REFCLSID clsidDeviceClass);
-	std::list<CName>& names();
+	NameList& names();
 
 	bool add(GUID devClsid,String devName);
 	CFilter* get(String devName);
@@ -50,6 +52,7 @@ protected:
 	IGraphBuilder*				m_pGraph;
 	IMediaControl*				m_pControl;
 	std::map<String,CFilter>	m_map;
+//	std::map<REFCLSID,NameList>	m_
 };
 
 #endif

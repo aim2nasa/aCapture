@@ -12,8 +12,8 @@ TEST(devRead,DxDevTest)
 	if(FAILED(hr)) { FAIL(); }
 
 	//하나 이상이 나오면 반드시 오든 것들은 이름이 나와야 한다
-	std::list<CName> names = dev.names();
-	for(std::list<CName>::iterator it=names.begin();it!=names.end();it++) {	
+	NameList names = dev.names();
+	for(NameList::iterator it=names.begin();it!=names.end();it++) {	
 		EXPECT_GT((*it).m_friendly.size(),0);
 		EXPECT_GT((*it).m_full.size(),0);
 	}

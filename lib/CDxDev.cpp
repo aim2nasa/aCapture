@@ -101,7 +101,7 @@ HRESULT CDxDev::devRead(REFCLSID clsidDeviceClass)
 	return hr;
 }
 
-std::list<CName>& CDxDev::names()
+NameList& CDxDev::names()
 {
 	return m_names;
 }

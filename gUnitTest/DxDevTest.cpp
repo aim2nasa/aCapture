@@ -12,8 +12,9 @@ TEST(devRead,DxDevTest)
 	EXPECT_EQ(b,true);
 
 	//하나 이상이 나오면 반드시 오든 것들은 이름이 나와야 한다
-	NameList names = dev.names();
-	for(NameList::iterator it=names.begin();it!=names.end();it++) {	
+	NameList* pNames = dev.names(CLSID_AudioInputDeviceCategory);
+	EXPECT_NE(pNames,reinterpret_cast<NameList*>(NULL));
+	for(NameList::iterator it=pNames->begin();it!=pNames->end();it++) {	
 		EXPECT_GT((*it).m_friendly.size(),0);
 		EXPECT_GT((*it).m_full.size(),0);
 	}

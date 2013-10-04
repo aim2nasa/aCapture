@@ -101,17 +101,17 @@ bool CDxDev::devRead(REFCLSID clsidDeviceClass)
 		hrFailed(hr);
 	}
 
-	wchar_t clsid[128];
-	StringFromGUID2(clsidDeviceClass,clsid,sizeof(clsid)/sizeof(wchar_t));
 	std::pair<std::map<String,NameList>::iterator,bool> ret;
-	ret = m_clsidMap.insert(std::pair<String,NameList>(String(clsid),names));
-	if(!ret.second) m_errorMsg = String(_T("insert to map failed "))+String(clsid);
+	ret = m_clsidMap.insert(std::pair<String,NameList>(strFromGuid(clsidDeviceClass),names));
+	if(!ret.second) m_errorMsg = String(_T("insert to map failed "))+strFromGuid(clsidDeviceClass);
 	return ret.second;
 }
 
-NameList& CDxDev::names()
+NameList* CDxDev::names(REFCLSID clsidDeviceClass)
 {
-	return m_names;
+	std::map<String,NameList>::iterator it = m_clsidMap.find(strFromGuid(clsidDeviceClass));
+	if(it!=m_clsidMap.end()) return &it->second;
+	return NULL;
 }
 
 bool CDxDev::add(GUID devClsid,String devName)
@@ -181,4 +181,11 @@ bool CDxDev::run()
 		return false;
 	}
 	return true;
+}
+
+String CDxDev::strFromGuid(REFCLSID clsidDeviceClass)
+{
+	wchar_t clsid[128];
+	StringFromGUID2(clsidDeviceClass,clsid,sizeof(clsid)/sizeof(wchar_t));
+	return String(clsid);
 }
